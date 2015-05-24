@@ -70,7 +70,7 @@ public class HistogramaArquivosReport {
 
 		// Cria o gráfico
 		Bar3DChartBuilder grafico = cht.bar3DChart()
-				.setDataSource(criaDataSourceGrafico())
+				.setDataSource(criaDataSource())
 				.setTitle("Qtd. arquivos x Extensão")
 				.setCategory(colunaExtensao).setUseSeriesAsCategory(true)
 				.addSerie(cht.serie(colunaQuantidade));
@@ -90,7 +90,7 @@ public class HistogramaArquivosReport {
 		builder.summary(grafico);
 
 		// Associa o data source no relatório
-		builder.setDataSource(criaDataSourceTabela());
+		builder.setDataSource(criaDataSource());
 
 		// Exibe o relatório
 		try {
@@ -108,20 +108,7 @@ public class HistogramaArquivosReport {
 		}
 	}
 
-	private JRDataSource criaDataSourceTabela() {
-		DRDataSource dataSource = new DRDataSource("extensao", "quantidade",
-				"tamanhoMB");
-
-		for (String extensao : histogramaArquivos.keySet()) {
-			TipoArquivo tipo = histogramaArquivos.get(extensao);
-			dataSource.add(extensao, tipo.getQuantidadeEncontrada(),
-					new BigDecimal(tipo.getTamanhoEmMB()));
-		}
-
-		return dataSource;
-	}
-
-	private JRDataSource criaDataSourceGrafico() {
+	private JRDataSource criaDataSource() {
 		DRDataSource dataSource = new DRDataSource("extensao", "quantidade",
 				"tamanhoMB");
 
@@ -153,8 +140,7 @@ public class HistogramaArquivosReport {
 	}
 
 	public static void main(String[] args) {
-		VarredorArquivos varredor = new VarredorArquivos(
-				"/home/sidsu/Google Drive");
+		VarredorArquivos varredor = new VarredorArquivos("/home/sidsu/Música");
 		varredor.varreDiretorios();
 		HistogramaArquivosReport report = new HistogramaArquivosReport(
 				varredor.getHistogramaArquivos());

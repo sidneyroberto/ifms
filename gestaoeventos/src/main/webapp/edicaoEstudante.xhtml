@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Editar dados do estudante</ui:define>
+	<ui:define name="corpo">
+		<div class="row placeholders">
+			<h:form>
+				<h:panelGrid id="grid" columns="1">
+					<p:messages id="mensagens" />
+					<h:outputLabel value="RA:*" for="ra" />
+					<p:inputMask id="ra" value="#{estudanteBean.estudante.ra}"
+						required="true" size="6"
+						requiredMessage="Por favor, informe o RA do estudante, utilizando 6 dígitos."
+						mask="999999">
+						<f:validateLength minimum="6" maximum="6" />
+					</p:inputMask>
+					<p:message for="ra" autoUpdate="true" />
+
+					<br />
+					<h:outputLabel value="Nome:*" for="nome" />
+					<p:inputText id="nome" value="#{estudanteBean.estudante.nome}"
+						required="true" onblur="value=value.toUpperCase()" size="30"
+						requiredMessage="Por favor, informe o nome do estudante.">
+						<f:validateLength maximum="150" />	
+					</p:inputText>
+					<p:message for="nome" autoUpdate="true" />
+
+					<br />
+					<h:outputLabel value="CPF:" for="cpf" />
+					<p:inputMask id="cpf" value="#{estudanteBean.estudante.cpf}"  size="11"
+						mask="999.999.999-99">
+						<f:validator validatorId="cpfValidator" />
+					</p:inputMask>
+					<p:message for="cpf" autoUpdate="true" />
+
+					<br />
+					<h:outputLabel value="Data de nascimento:" for="data_nascimento" />
+					<p:calendar id="data_nascimento"  size="10"
+						value="#{estudanteBean.estudante.dataNascimento}" mask="true"
+						pattern="dd/MM/yyyy" locale="pt">
+						<f:validator validatorId="dataNascimentoValidator" />
+					</p:calendar>
+					<p:message for="data_nascimento" autoUpdate="true" />
+
+					<br />
+					<h:outputLabel value="Sexo:*" for="sexo" />
+					<p:selectOneRadio id="sexo" value="#{estudanteBean.estudante.sexo}"
+						required="true" requiredMessage="Por favor, selecione um sexo.">
+						<f:selectItem itemValue="#{estudanteBean.masculino}"
+							itemLabel="Masculino" />
+						<f:selectItem itemValue="#{estudanteBean.feminino}"
+							itemLabel="Feminino" />
+					</p:selectOneRadio>
+					<p:message for="sexo" autoUpdate="true" />
+
+					<br />
+					<h:outputLabel value="Turma:*" for="turma" />
+					<p:selectOneMenu id="turma"
+						value="#{estudanteBean.estudante.turma}" effect="fold"
+						required="true" requiredMessage="Por favor, selecione uma turma."
+						converter="turmaConverter">
+						<f:selectItem itemLabel="-- Escolha uma turma --" itemValue="" />
+						<f:selectItems value="#{estudanteBean.turmas}" var="turma"
+							itemValue="#{turma}"
+							itemLabel="#{turma.curso.nome} - #{turma.periodo} - #{turma.semestreInicio}" />
+					</p:selectOneMenu>
+					<p:message for="turma" autoUpdate="true" />
+
+					<br />
+					<p:commandButton value="Editar" validateClient="true" update="grid"
+						action="#{estudanteBean.editar}"/>
+				</h:panelGrid>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

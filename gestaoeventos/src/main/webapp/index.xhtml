@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:define name="titulo">Menu</ui:define>
+	<ui:define name="corpo">
+		<div class="row placeholders">
+			<div class="col-xs-6 col-sm-3 placeholder">
+				<a href="evento.xhtml"><h:graphicImage library="images" name="event.png"
+						styleClass="img-responsive" /></a>
+				<h4>Eventos</h4>
+				<span class="text-muted">Gestão de eventos</span>
+			</div>
+			<div class="col-xs-6 col-sm-3 placeholder">
+				<a href="estudante.xhtml"><h:graphicImage library="images" name="student.png"
+						styleClass="img-responsive" /></a>
+				<h4>Estudantes</h4>
+				<span class="text-muted">Gestão de estudantes participantes</span>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+

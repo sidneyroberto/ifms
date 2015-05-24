@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Estudantes</ui:define>
+	<ui:define name="corpo">
+
+		<h:form id="form">
+			<div class="row placeholders">
+				<p:messages id="mensagens" />
+				<p:dataTable id="tabela_estudantes"
+					value="#{estudanteBean.estudantes}" var="estudante"
+					emptyMessage="Nenhum estudante cadastrado." paginator="true"
+					rows="10" currentPageReportTemplate="{currentPage} de {totalPages}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,15,20">
+
+					<f:facet name="header">
+						<h:outputText value="Estudantes cadastrados" />
+					</f:facet>
+
+					<p:column headerText="RA" sortBy="#{estudante.ra}"
+						filterBy="#{estudante.ra}" filterMatchMode="contains">
+						<h:outputText value="#{estudante.ra}" />
+					</p:column>
+
+					<p:column headerText="Nome" sortBy="#{estudante.nome}"
+						filterBy="#{estudante.nome}" filterMatchMode="contains">
+						<h:outputText value="#{estudante.nome}" />
+					</p:column>
+
+					<p:column headerText="Curso">
+						<h:outputText value="#{estudante.turma.curso.nome}" />
+					</p:column>
+
+					<p:column headerText="EXIBIR" style="width: 10%">
+						<p:commandLink update=":form:detalhesEstudante"
+							oncomplete="PF('dialogExibicao').show('#{component.clientId}');">
+							<span class="ui-icon ui-icon-search" />
+							<f:setPropertyActionListener value="#{estudante}"
+								target="#{estudanteBean.estudante}" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column headerText="EDITAR" style="width: 10%">
+						<p:commandLink action="#{estudanteBean.aoEditar(estudante)}">
+							<span class="ui-icon ui-icon-pencil" />
+						</p:commandLink>
+					</p:column>
+					
+					<p:column headerText="EXCLUIR" style="width: 10%">
+						<p:commandLink update=":form:dialogExclusao"
+							oncomplete="PF('dialogExclusao').show('#{component.clientId}');">
+							<span class="ui-icon ui-icon-trash" />
+							<f:setPropertyActionListener value="#{estudante}"
+								target="#{estudanteBean.estudante}" />
+						</p:commandLink>
+					</p:column>
+
+				</p:dataTable>
+
+				<p:dialog widgetVar="dialogExibicao" id="dialogExibicao"
+					header="Dados do estudante" width="400" modal="true"
+					draggable="false" resizable="false">
+					<p:outputPanel id="detalhesEstudante">
+						<h:panelGrid columns="2">
+							<h:outputLabel value="RA:" for="exibe_ra" />
+							<h:outputText id="exibe_ra" value="#{estudanteBean.estudante.ra}" />
+							<h:outputLabel value="Nome:" for="exibe_nome" />
+							<h:outputText id="exibe_nome"
+								value="#{estudanteBean.estudante.nome}" />
+							<h:outputLabel value="CPF:" for="exibe_cpf"
+								rendered="#{not empty estudanteBean.estudante.cpf}" />
+							<h:outputText id="exibe_cpf"
+								value="#{estudanteBean.estudante.cpf}"
+								rendered="#{not empty estudanteBean.estudante.cpf}" />
+							<h:outputLabel value="Data de nascimento:"
+								for="exibe_datanascimento"
+								rendered="#{not empty estudanteBean.estudante.dataNascimento}" />
+							<h:outputText id="exibe_datanascimento"
+								value="#{estudanteBean.estudante.dataNascimento}"
+								rendered="#{not empty estudanteBean.estudante.dataNascimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+							<h:outputLabel value="Sexo:" for="exibe_sexo" />
+							<h:outputText id="exibe_sexo"
+								value="#{estudanteBean.estudante.sexo}" />
+							<h:outputLabel value="Turma:" for="exibe_turma" />
+							<h:outputText id="exibe_turma"
+								value="#{estudanteBean.estudante.turma.curso.nome} - #{estudanteBean.estudante.turma.semestreInicio} - #{estudanteBean.estudante.turma.periodo}" />
+						</h:panelGrid>
+
+						<center>
+							<p:commandButton value="Ok"
+								oncomplete="PF('dialogExibicao').hide();" />
+						</center>
+					</p:outputPanel>
+				</p:dialog>
+
+				<p:confirmDialog widgetVar="dialogExclusao" id="dialogExclusao"
+					header="Excluir" message="#{estudanteBean.aoExcluir()}"
+					width="400" modal="true" closable="false"
+					severity="alert">
+					<h:panelGroup layout="block" style="text-align: right">
+						<p:commandButton value="Sim" action="#{estudanteBean.excluir}"
+							oncomplete="PF('dialogExclusao').hide();"
+							update="tabela_estudantes, mensagens" />
+						<p:commandButton value="Não" oncomplete="PF('dialogExclusao').hide();" />
+					</h:panelGroup>
+				</p:confirmDialog>
+			</div>
+			<h:commandLink style="font-size: 20px;"
+				action="#{estudanteBean.aoCadastrar}"
+				value="Cadastrar novo estudante" />
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+

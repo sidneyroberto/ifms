@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Eventos</ui:define>
+	<ui:define name="corpo">
+
+		<h:form id="form">
+			<div class="row placeholders">
+				<p:messages id="mensagens" />
+
+				<h:commandLink style="font-size: 20px;"
+					action="#{eventoBean.aoCadastrar}" value="Cadastrar novo evento" />
+
+				<p:dataTable id="tabela_eventos" selectionMode="single"
+					rowKey="#{evento.id}" selection="#{eventoBean.evento}"
+					value="#{eventoBean.eventos}" var="evento"
+					emptyMessage="Nenhum evento cadastrado." paginator="true" rows="10"
+					currentPageReportTemplate="{currentPage} de {totalPages}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,15,20">
+
+					<p:ajax event="rowSelect"
+						listener="#{eventoBean.aoSelecionarEvento}" update=":form" />
+
+					<f:facet name="header">
+						<h:outputText value="Eventos cadastrados" />
+					</f:facet>
+
+					<p:column headerText="Título" sortBy="#{evento.titulo}"
+						filterBy="#{evento.titulo}" filterMatchMode="contains">
+						<h:outputText value="#{evento.titulo}" />
+					</p:column>
+
+					<p:column headerText="Data de realização"
+						sortBy="#{evento.dataRealizacao}">
+						<h:outputText value="#{evento.dataRealizacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Horário">
+						<h:outputText
+							value="#{evento.horarioInicio} - #{evento.horarioFim}" />
+					</p:column>
+
+					<p:column headerText="INCLUIR ATIVIDADE" style="width: 10%">
+						<p:commandLink action="#{eventoBean.aoCadastrarAtividade(evento)}">
+							<center>
+								<span class="ui-icon ui-icon-plus" />
+							</center>
+						</p:commandLink>
+					</p:column>
+
+					<p:column headerText="EXIBIR" style="width: 10%">
+						<p:commandLink update=":form_exibicao:detalhesEvento"
+							oncomplete="PF('dialogExibicaoEvento').show('#{component.clientId}');">
+							<center>
+								<span class="ui-icon ui-icon-search" />
+							</center>
+							<f:setPropertyActionListener value="#{evento}"
+								target="#{eventoBean.evento}" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column headerText="EDITAR" style="width: 10%">
+						<p:commandLink action="#{eventoBean.aoEditar(evento)}">
+							<center>
+								<span class="ui-icon ui-icon-pencil" />
+							</center>
+						</p:commandLink>
+					</p:column>
+
+					<p:column headerText="EXCLUIR" style="width: 10%">
+						<p:commandLink update=":form:dialogExclusao"
+							oncomplete="PF('dialogExclusao').show('#{component.clientId}');">
+							<center>
+								<span class="ui-icon ui-icon-trash" />
+							</center>
+							<f:setPropertyActionListener value="#{evento}"
+								target="#{eventoBean.evento}" />
+						</p:commandLink>
+					</p:column>
+
+				</p:dataTable>
+
+				<p:confirmDialog widgetVar="dialogExclusao" id="dialogExclusao"
+					header="Excluir" message="#{eventoBean.aoExcluir()}" width="400"
+					modal="true" closable="false" severity="alert">
+					<h:panelGroup layout="block" style="text-align: right">
+						<p:commandButton value="Sim" action="#{eventoBean.aoExcluir()}"
+							oncomplete="PF('dialogExclusao').hide();"
+							update="tabela_eventos, mensagens" />
+						<p:commandButton value="Não"
+							oncomplete="PF('dialogExclusao').hide();" />
+					</h:panelGroup>
+				</p:confirmDialog>
+			</div>
+
+			<br />
+			<br />
+			<p:dataTable id="tabela_atividades" widgetVar="tabela_atividades"
+				value="#{eventoBean.atividades}" var="atividade"
+				emptyMessage="Nenhuma atividade cadastrada para o evento #{eventoBean.evento.titulo}."
+				paginator="true" rows="10"
+				rendered="#{eventoBean.eventoPossuiAtividades()}"
+				currentPageReportTemplate="{currentPage} de {totalPages}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,15,20">
+
+				<f:facet name="header">
+					<h:outputText
+						value="Atividades cadastradas para o evento #{eventoBean.evento.titulo}" />
+				</f:facet>
+
+				<p:column headerText="Título" sortBy="#{atividade.titulo}"
+					filterBy="#{atividade.titulo}" filterMatchMode="contains">
+					<h:outputText value="#{atividade.titulo}" />
+				</p:column>
+
+				<p:column headerText="Duração em horas">
+					<h:outputText value="#{atividade.duracaoEmHoras}" />
+				</p:column>
+
+				<p:column headerText="EXIBIR" style="width: 10%">
+					<p:commandLink update=":form_exibicao:detalhesAtividade"
+							oncomplete="PF('dialogExibicaoAtividade').show('#{component.clientId}');">
+						<span class="ui-icon ui-icon-search" />
+						<f:setPropertyActionListener value="#{atividade}"
+							target="#{eventoBean.atividade}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="EDITAR" style="width: 10%">
+					<p:commandLink action="#{eventoBean.aoEditar(evento)}">
+						<span class="ui-icon ui-icon-pencil" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="EXCLUIR" style="width: 10%">
+					<p:commandLink update=":form:dialogExclusao"
+						oncomplete="PF('dialogExclusao').show('#{component.clientId}');">
+						<span class="ui-icon ui-icon-trash" />
+						<f:setPropertyActionListener value="#{evento}"
+							target="#{eventoBean.evento}" />
+					</p:commandLink>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="form_exibicao">
+			<p:dialog widgetVar="dialogExibicaoEvento" id="dialogExibicaoEvento"
+				header="Dados do evento" width="400" modal="true" draggable="false"
+				resizable="false">
+				<p:outputPanel id="detalhesEvento">
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Título:" for="exibe_titulo" />
+						<h:outputText id="exibe_titulo"
+							value="#{eventoBean.evento.titulo}" />
+						<h:outputLabel value="Descrição:" for="exibe_descricao" />
+						<h:outputText id="exibe_descricao"
+							value="#{eventoBean.evento.descricao}" />
+						<h:outputLabel value="Data de realização:"
+							for="exibe_datarealizacao" />
+						<h:outputText id="exibe_datarealizacao"
+							value="#{eventoBean.evento.dataRealizacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+						<h:outputLabel value="Horário de início:"
+							for="exibe_horarioinicio"
+							rendered="#{not empty eventoBean.evento.horarioInicio}" />
+						<h:outputText id="exibe_horarioinicio"
+							value="#{eventoBean.evento.horarioInicio}"
+							rendered="#{not empty eventoBean.evento.horarioInicio}">
+							<!-- <f:convertDateTime pattern="HH:mm" /> -->
+						</h:outputText>
+						<h:outputLabel value="Horário de fim:" for="exibe_horariofim"
+							rendered="#{not empty eventoBean.evento.horarioFim}" />
+						<h:outputText id="exibe_horariofim"
+							value="#{eventoBean.evento.horarioFim}"
+							rendered="#{not empty eventoBean.evento.horarioFim}">
+							<!-- <f:convertDateTime pattern="HH:mm" /> -->
+						</h:outputText>
+					</h:panelGrid>
+
+					<center>
+						<p:commandButton value="Ok"
+							oncomplete="PF('dialogExibicaoEvento').hide();" />
+					</center>
+				</p:outputPanel>
+			</p:dialog>
+
+			<p:dialog widgetVar="dialogExibicaoAtividade"
+				id="dialogExibicaoAtividade" header="Dados da atividade" width="400"
+				modal="true" draggable="false" resizable="false">
+				<p:outputPanel id="detalhesAtividade">
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Título:" for="exibe_tituloativ" />
+						<h:outputText id="exibe_tituloativ"
+							value="#{eventoBean.atividade.titulo}" />
+						<h:outputLabel value="Descrição:" for="exibe_descricaoativ" />
+						<h:outputText id="exibe_descricaoativ"
+							value="#{eventoBean.atividade.descricao}" />
+						<h:outputLabel value="Duração (em horas):" for="exibe_duracaoativ" />
+						<h:outputText id="exibe_duracaoativ"
+							value="#{eventoBean.atividade.duracaoEmHoras}" />
+					</h:panelGrid>
+
+					<center>
+						<p:commandButton value="Ok"
+							oncomplete="PF('dialogExibicaoAtividade').hide();" />
+					</center>
+				</p:outputPanel>
+			</p:dialog>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

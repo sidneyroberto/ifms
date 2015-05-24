@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Novo evento</ui:define>
+	<ui:define name="corpo">
+		<div class="row placeholders">
+			<h:form>
+				<h:panelGrid id="grid" columns="1">
+					<p:messages id="mensagens" />
+					<h:outputLabel value="Título:*" for="titulo" />
+					<p:inputText id="titulo" value="#{eventoBean.evento.titulo}"
+						required="true"
+						requiredMessage="Por favor, informe o título do evento." />
+					<p:message for="titulo" autoUpdate="true" />
+
+					<br />
+					<h:outputLabel value="Descrição:*" for="descricao" />
+					<p:inputTextarea id="descricao"
+						value="#{eventoBean.evento.descricao}" rows="6" cols="33"
+						required="true"
+						requiredMessage="Por favor, informe a descrição do evento." />
+					<p:message for="descricao" autoUpdate="true" />
+
+					<br />
+					<h:outputLabel value="Data de realização:" for="data_realizacao" />
+					<p:calendar id="data_realizacao" size="10"
+						value="#{eventoBean.evento.dataRealizacao}" mask="true"
+						pattern="dd/MM/yyyy" locale="pt" />
+					<p:message for="data_realizacao" autoUpdate="true" />
+
+					<br />
+					<h:outputLabel value="Horário de início:" for="horario_inicio" />
+					<p:calendar id="horario_inicio" size="5"
+						value="#{eventoBean.evento.horarioInicio}" pattern="HH:mm"
+						timeOnly="true" locale="pt" />
+					<p:message for="horario_inicio" autoUpdate="true" />
+
+					<br />
+					<h:outputLabel value="Horário de término:" for="horario_fim" />
+					<p:calendar id="horario_fim" size="5"
+						value="#{eventoBean.evento.horarioFim}" pattern="HH:mm"
+						timeOnly="true" locale="pt" />
+					<p:message for="horario_fim" autoUpdate="true" />
+
+					<br />
+					<p:commandButton value="Salvar" validateClient="true" update="grid"
+						action="#{eventoBean.salvar()}" />
+				</h:panelGrid>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
