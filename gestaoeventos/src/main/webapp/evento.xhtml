@@ -76,7 +76,7 @@
 					</p:column>
 
 					<p:column headerText="EXCLUIR" style="width: 10%">
-						<p:commandLink update=":form:dialogExclusao"
+						<p:commandLink update=":form_exibicao:dialogExclusao"
 							oncomplete="PF('dialogExclusao').show('#{component.clientId}');">
 							<center>
 								<span class="ui-icon ui-icon-trash" />
@@ -88,17 +88,6 @@
 
 				</p:dataTable>
 
-				<p:confirmDialog widgetVar="dialogExclusao" id="dialogExclusao"
-					header="Excluir" message="#{eventoBean.aoExcluir()}" width="400"
-					modal="true" closable="false" severity="alert">
-					<h:panelGroup layout="block" style="text-align: right">
-						<p:commandButton value="Sim" action="#{eventoBean.aoExcluir()}"
-							oncomplete="PF('dialogExclusao').hide();"
-							update="tabela_eventos, mensagens" />
-						<p:commandButton value="Não"
-							oncomplete="PF('dialogExclusao').hide();" />
-					</h:panelGroup>
-				</p:confirmDialog>
 			</div>
 
 			<br />
@@ -128,7 +117,7 @@
 
 				<p:column headerText="EXIBIR" style="width: 10%">
 					<p:commandLink update=":form_exibicao:detalhesAtividade"
-							oncomplete="PF('dialogExibicaoAtividade').show('#{component.clientId}');">
+						oncomplete="PF('dialogExibicaoAtividade').show('#{component.clientId}');">
 						<span class="ui-icon ui-icon-search" />
 						<f:setPropertyActionListener value="#{atividade}"
 							target="#{eventoBean.atividade}" />
@@ -142,7 +131,7 @@
 				</p:column>
 
 				<p:column headerText="EXCLUIR" style="width: 10%">
-					<p:commandLink update=":form:dialogExclusao"
+					<p:commandLink update=""
 						oncomplete="PF('dialogExclusao').show('#{component.clientId}');">
 						<span class="ui-icon ui-icon-trash" />
 						<f:setPropertyActionListener value="#{evento}"
@@ -154,6 +143,19 @@
 		</h:form>
 
 		<h:form id="form_exibicao">
+
+			<p:confirmDialog widgetVar="dialogExclusao" id="dialogExclusao"
+				header="Excluir" message="#{eventoBean.aoExcluir()}" width="400"
+				modal="true" closable="false" severity="alert">
+				<h:panelGroup layout="block" style="text-align: right">
+					<p:commandButton value="Sim" action="#{eventoBean.excluir()}"
+						oncomplete="PF('dialogExclusao').hide();"
+						update=":form:tabela_eventos, :form:tabela_atividades, :form:mensagens" />
+					<p:commandButton value="Não"
+						oncomplete="PF('dialogExclusao').hide();" />
+				</h:panelGroup>
+			</p:confirmDialog>
+
 			<p:dialog widgetVar="dialogExibicaoEvento" id="dialogExibicaoEvento"
 				header="Dados do evento" width="400" modal="true" draggable="false"
 				resizable="false">

@@ -59,14 +59,14 @@ public class EventoBean {
 		return "evento?faces-redirect=true";
 	}
 
-	public void editar() {
+	public String editar() {
 		Evento eventoRecuperado = eventoDAO.verificaEventoJaExiste(evento);
 		if (eventoRecuperado == null
 				|| (evento.getId() == eventoRecuperado.getId())) {
 			if (eventoDAO.atualiza(evento)) {
 				atualizaListaEventos();
 				JSFUtil.addSuccessMessage("mensagens",
-						"Dados do evento editados com sucesso!", false);
+						"Dados do evento editados com sucesso!", true);
 			} else {
 				JSFUtil.addErrorMessage(
 						"mensagens",
@@ -79,6 +79,7 @@ public class EventoBean {
 					"Existe outro estudante previamente cadastrado com este RA.",
 					true);
 		}
+		return "evento?faces-redirect=true";
 	}
 
 	public void excluir() {
@@ -87,6 +88,7 @@ public class EventoBean {
 			carregaListaAtividades(evento);
 			JSFUtil.addSuccessMessage("mensagens",
 					"Evento excluído com sucesso!", false);
+			atualizaListaAtividades();
 		} else {
 			JSFUtil.addErrorMessage(
 					"mensagens",

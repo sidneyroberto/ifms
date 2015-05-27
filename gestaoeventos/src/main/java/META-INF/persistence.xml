@@ -14,9 +14,9 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 			
 
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
-			<!-- <property name="hibernate.hbm2ddl.import_files" value="META-INF/sql/dados_iniciais.sql" /> -->
-			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<property name="hibernate.hbm2ddl.import_files" value="META-INF/sql/dados_iniciais.sql" />
+			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 		</properties>
 	</persistence-unit>
