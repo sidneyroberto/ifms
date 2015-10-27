@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="788.0" prefWidth="995.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifms.lp3.controller.FormasController">
+	<children>
+		<Circle fx:id="circulo" fill="DODGERBLUE" layoutX="269.0" layoutY="341.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+		<Rectangle fx:id="quadrado" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="617.0" layoutY="240.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+		<Button fx:id="botaoAumentar" layoutX="452.0" layoutY="678.0" mnemonicParsing="false" text="Aumentar" />
+		<Button fx:id="botaoDiminuir" layoutX="457.0" layoutY="716.0" mnemonicParsing="false" text="Diminuir" />
+		<ColorPicker fx:id="seletorCores" layoutX="448.0" layoutY="753.0" />
+	</children>
+</AnchorPane>
