@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="233.0" prefWidth="254.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifms.lp3.controller.CalculoAreaController">
+	<children>
+		<Label id="labelForma" layoutX="14.0" layoutY="14.0" text="Forma:" />
+		<RadioButton fx:id="radioQuadrado" layoutX="58.0" layoutY="14.0" mnemonicParsing="false" selected="true" text="Quadrado">
+			<toggleGroup>
+				<ToggleGroup fx:id="forma" />
+			</toggleGroup>
+		</RadioButton>
+		<RadioButton fx:id="radioRetangulo" layoutX="151.0" layoutY="14.0" mnemonicParsing="false" text="Retângulo" toggleGroup="$forma" />
+		<Label fx:id="labelLado" layoutX="14.0" layoutY="47.0" text="Lado:" />
+		<TextField fx:id="campoLado" editable="true" layoutX="13.0" layoutY="64.0" prefHeight="25.0" prefWidth="76.0" />
+		<Label fx:id="labelLargura" disable="true" layoutX="14.0" layoutY="93.0" text="Largura:" />
+		<TextField fx:id="campoLargura" disable="true" editable="false" layoutX="14.0" layoutY="110.0" prefHeight="25.0" prefWidth="76.0" />
+		<Label fx:id="labelAltura" disable="true" layoutX="14.0" layoutY="140.0" text="Altura:" />
+		<TextField fx:id="campoAltura" disable="true" editable="false" layoutX="15.0" layoutY="157.0" prefHeight="25.0" prefWidth="76.0" />
+		<Button fx:id="botaoCalcular" layoutX="16.0" layoutY="189.0" mnemonicParsing="false" text="Calcular" />
+	</children>
+</AnchorPane>
